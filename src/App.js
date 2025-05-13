@@ -1,13 +1,26 @@
 import './App.scss'
+import Header from './components/header/Header';
+import { Link, Outlet } from 'react-router-dom';
 
 const App = () => {
 
   return (
     <div className="app-container">
-      Hieu Toki
-      <button className="btn btn-primary">Test</button>
+      <div className='header-container'>
+        <Header />
+      </div>
+      <div className='main-container'>
+        <div className='sidenav-container'>
+
+        </div>
+        <div className='app-content'>
+          <Outlet />
+        </div>
+      </div>
     </div>
   );
 }
 
 export default App;
+
+// Outlet la cac Route con trong file App
