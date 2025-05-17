@@ -1,14 +1,13 @@
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
-import image from '../../../assets/bg2.jpg'
 import { FcPlus } from 'react-icons/fc'
 import { toast } from "react-toastify";
-import { postCreateNewUser } from '../../../services/apiService';
-
-const ModalCreateUser = (props) => {
-    const { show, setShow } = props
+import { putUpdateUser } from '../../../services/apiService';
+import _, { update } from 'lodash'
+const ModalUpdateUser = (props) => {
+    const { show, setShow, dataUpdate } = props
 
     const handleClose = () => {
         setShow(false)
@@ -18,6 +17,7 @@ const ModalCreateUser = (props) => {
         setRole("USER")
         setUsername("")
         setPreviewImage("")
+        props.resetUpdateData();
     };
 
     const [email, setEmail] = useState("");
@@ -26,6 +26,19 @@ const ModalCreateUser = (props) => {
     const [image, setImage] = useState("")
     const [role, setRole] = useState("USER")
     const [previewImage, setPreviewImage] = useState("")
+
+    useEffect(() => {
+        if (!_.isEmpty(dataUpdate)) {
+            //update state
+            setEmail(dataUpdate.email)
+            setImage("")
+            setRole(dataUpdate.role)
+            setUsername(dataUpdate.username)
+            if (dataUpdate.image) {
+                setPreviewImage(`data:image/jpeg;base64,${dataUpdate.image}`)
+            }
+        }
+    }, [dataUpdate])
 
     const handleUploadImage = (event) => {
         if (event.target && event.target.files && event.targe.files[0]) {
@@ -50,13 +63,10 @@ const ModalCreateUser = (props) => {
             toast.error('Invalid Email')
             return;
         }
-        if (!password) {
-            toast.error('Invalid Password')
-            return;
-        }
+
 
         //submit 
-        let data = await postCreateNewUser(email, password, username, role, image)
+        let data = await putUpdateUser(dataUpdate.id, username, role, image)
         if (data && data.EC === 0) {
             toast.success(data.EM);
             handleClose();
@@ -69,25 +79,21 @@ const ModalCreateUser = (props) => {
 
     return (
         <>
-            {/* <Button variant="primary" onClick={handleShow}>
-                Launch demo modal
-            </Button> */}
-
             <Modal size='xl' show={show} onHide={handleClose} backdrop="static" className='modal-add-user'>
                 <Modal.Header closeButton>
-                    <Modal.Title>Add new users</Modal.Title>
+                    <Modal.Title>Update a users</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <form className="row g-3">
                         <div className="col-md-6">
                             <label className="form-label">Email</label>
-                            <input type="email" className="form-control" value={email}
+                            <input disabled type="email" className="form-control" value={email}
                                 onChange={(event) => setEmail(event.target.value)}
                             />
                         </div>
                         <div className="col-md-6">
                             <label className="form-label">Password</label>
-                            <input type="password" className="form-control" value={password}
+                            <input disabled type="password" className="form-control" value={password}
                                 onChange={(event) => setPaswword(event.target.value)}
                             />
                         </div>
@@ -136,4 +142,4 @@ const ModalCreateUser = (props) => {
         </>
     );
 }
-export default ModalCreateUser;
+export default ModalUpdateUser;
