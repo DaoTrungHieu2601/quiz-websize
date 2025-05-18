@@ -5,7 +5,7 @@ import Modal from 'react-bootstrap/Modal';
 import { FcPlus } from 'react-icons/fc'
 import { toast } from "react-toastify";
 import { putUpdateUser } from '../../../services/apiService';
-import _, { update } from 'lodash'
+import _ from 'lodash'
 const ModalUpdateUser = (props) => {
     const { show, setShow, dataUpdate } = props
 
@@ -17,7 +17,7 @@ const ModalUpdateUser = (props) => {
         setRole("USER")
         setUsername("")
         setPreviewImage("")
-        props.resetUpdateData();
+        props.resetUpdateData()
     };
 
     const [email, setEmail] = useState("");
@@ -70,7 +70,9 @@ const ModalUpdateUser = (props) => {
         if (data && data.EC === 0) {
             toast.success(data.EM);
             handleClose();
-            await props.fetchListUser()
+            // await props.fetchListUser()
+            // props.setCurrentPage(1);
+            await props.fetchListUserWithPageGinate(props.currentPage);
         }
         if (data && data.EC !== 0) {
             toast.error(data.EM);

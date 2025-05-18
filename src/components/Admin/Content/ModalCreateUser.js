@@ -2,7 +2,6 @@
 import { useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
-import image from '../../../assets/bg2.jpg'
 import { FcPlus } from 'react-icons/fc'
 import { toast } from "react-toastify";
 import { postCreateNewUser } from '../../../services/apiService';
@@ -60,7 +59,9 @@ const ModalCreateUser = (props) => {
         if (data && data.EC === 0) {
             toast.success(data.EM);
             handleClose();
-            await props.fetchListUser()
+            // await props.fetchListUser()
+            props.setCurrentPage(1);
+            await props.fetchListUserWithPageGinate(1);
         }
         if (data && data.EC !== 0) {
             toast.error(data.EM);
