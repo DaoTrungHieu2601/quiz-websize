@@ -57,7 +57,7 @@ const Login = (props) => {
                 <button onClick={() => navigate('/register')}>Sign up</button>
             </div>
             <div className='title col-4 mx-auto'>
-                HieuToki
+                Hieu Toki
             </div>
             <div className='welcom col-4 mx-auto'>
                 Hello, who's this?
