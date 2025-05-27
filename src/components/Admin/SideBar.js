@@ -14,9 +14,11 @@ import { DiReact } from "react-icons/di";
 import { FaTachometerAlt, FaGem, FaList, FaGithub, FaRegLaughWink, FaHeart } from 'react-icons/fa';
 import sidebarBg from '../../assets/bg2.jpg';
 import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const SideBar = (props) => {
     const { image, collapsed, toggled, handleToggleSidebar } = props;
+    const navigate = useNavigate();
     return (
         <>
             <ProSidebar
@@ -40,7 +42,9 @@ const SideBar = (props) => {
                         }}
                     >
                         <DiReact size={'3em'} color={"00bff"} />
-                        <span>Dao Trung Hieu</span>
+                        <span onClick={() => navigate("/")}>
+                            Dao Trung Hieu
+                        </span>
                     </div>
                 </SidebarHeader>
 
@@ -66,7 +70,10 @@ const SideBar = (props) => {
                                 Quản lý Users
                                 <Link to="/admin/manage-users" />
                             </MenuItem>
-                            <MenuItem>Quản lý Bài Quiz</MenuItem>
+                            <MenuItem>
+                                Quản lý Bài Quiz
+                                <Link to="/admin/manage-quizzes" />
+                            </MenuItem>
                             <MenuItem>Quản lý câu hỏi</MenuItem>
                         </SubMenu>
 
