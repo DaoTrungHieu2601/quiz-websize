@@ -57,7 +57,7 @@ const ManageUser = (props) => {
     return (
         <div classNameName="manage-user-container">
             <div classNameName="title">
-                <h1 class="text-center border-bottom pb-2 w-50 mx-auto">Danh sách người dùng</h1>
+                <h1 className="text-center border-bottom pb-2 w-50 mx-auto">Danh sách người dùng</h1>
             </div>
             <div classNameName="users-content">
                 <div className="btn-add-new mt-3">

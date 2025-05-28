@@ -11,7 +11,7 @@ import {
 } from 'react-pro-sidebar';
 import { DiReact } from "react-icons/di";
 
-import { FaTachometerAlt, FaGem, FaList, FaGithub, FaRegLaughWink, FaHeart } from 'react-icons/fa';
+import { FaTachometerAlt, FaGem, FaGithub } from 'react-icons/fa';
 import sidebarBg from '../../assets/bg2.jpg';
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
@@ -74,7 +74,10 @@ const SideBar = (props) => {
                                 Quản lý Bài Quiz
                                 <Link to="/admin/manage-quizzes" />
                             </MenuItem>
-                            <MenuItem>Quản lý câu hỏi</MenuItem>
+                            <MenuItem>
+                                <Link to="/admin/manage-questions" />
+                                Quản lý câu hỏi
+                            </MenuItem>
                         </SubMenu>
 
                     </Menu>
