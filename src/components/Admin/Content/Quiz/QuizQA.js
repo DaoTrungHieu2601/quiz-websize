@@ -1,19 +1,19 @@
 import { useEffect, useState } from 'react';
 import Select from 'react-select';
-import './Questions.scss'
+import './QuizQA.scss'
 import { BsFillPatchPlusFill } from "react-icons/bs";
 import { BsFillPatchMinusFill } from "react-icons/bs";
 import { FiMinusCircle } from "react-icons/fi";
 import { FiPlusCircle } from "react-icons/fi";
 import { RiImageAddFill } from "react-icons/ri"
 import { v4 as uuidv4 } from 'uuid';
-import _, { create } from 'lodash';
+import _, { create, set } from 'lodash';
 import Lightbox from "react-awesome-lightbox";
-import { getAllQuizForAdmin, postCreateNewQuestion, postCreateNewAnswer } from "../../../../services/apiService";
+import { getAllQuizForAdmin, postCreateNewQuestion, postCreateNewAnswer, getQuizWithQA, postUpsertQA } from "../../../../services/apiService";
 import { toast } from "react-toastify";
 
 
-const Questions = () => {
+const QuizQA = () => {
     const initQuestions = [
         {
             id: uuidv4(),
@@ -148,6 +148,9 @@ const Questions = () => {
                 isValidQ = false;
                 indexQ1 = i
                 break;
+            } if (isValidAnswer === false) {
+                toast.error(`Not empty answers ${indexA + 1} at Question ${indexQ + 1}`)
+                return; // Thêm dòng này
             }
         }
 
@@ -156,17 +159,29 @@ const Questions = () => {
             return;
         }
 
-        // submit 
-        for (const question of questions) {
-            const q = await postCreateNewQuestion(+selectedQuiz.value, question.description, question.imageFile);
-            for (const answer of question.answers) {
-                await postCreateNewAnswer(answer.description, answer.isCorrect, q.DT.id);
+        let questionClone = _.cloneDeep(questions);
+        for (let i = 0; i < questionClone.length; i++) {
+            if (questionClone[i].imageFile) {
+                questionClone[i].imageFile = await toBase64(questionClone[i].imageFile);
             }
         }
+        let res = await postUpsertQA({
+            quizId: selectedQuiz.value,
+            questions: questionClone,
+        });
 
-        toast.success(`Create questions and answers success`)
-        setQuestions(initQuestions);
+        if (res && res.EC === 0) {
+            toast.success(res.EM)
+            fetchQuizWithQA();
+        }
     }
+
+    const toBase64 = file => new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = reject;
+    });
 
     const handlePreviewImage = (questionId) => {
         let questionsClone = _.cloneDeep(questions)
@@ -185,6 +200,37 @@ const Questions = () => {
         fetchQuiz();
     }, [])
 
+    useEffect(() => {
+        if (selectedQuiz && selectedQuiz.value) {
+            fetchQuizWithQA();
+        }
+    }, [selectedQuiz])
+
+    function urltoFile(url, filename, mimeType) {
+        return (fetch(url)
+            .then(function (res) { return res.arrayBuffer(); })
+            .then(function (buf) { return new File([buf], filename, { type: mimeType }) })
+        );
+    }
+
+    const fetchQuizWithQA = async () => {
+        let res = await getQuizWithQA(selectedQuiz.value);
+        if (res && res.EC === 0) {
+            let newQA = [];
+            for (let i = 0; i < res.DT.qa.length; i++) {
+                let q = res.DT.qa[i];
+                if (q.imageFile) {
+                    // Phải await để lấy File object
+                    q.imageFile = await urltoFile(`data:image/png;base64, ${q.imageFile}`, `Question-${q.id}.png`, 'image/png');
+                }
+                newQA.push(q);
+            }
+            setQuestions(newQA);
+        }
+    }
+
+
+
     const fetchQuiz = async () => {
         let res = await getAllQuizForAdmin();
         if (res && res.EC === 0) {
@@ -200,10 +246,7 @@ const Questions = () => {
 
     return (
         <div className="questions-container">
-            <div className="title">
-                Manage Question
-            </div>
-            <hr />
+
             <div className="add-new-question">
                 <div className='col-6 form -group'>
                     <label className='mb-2'>Select Quiz</label>
@@ -319,4 +362,4 @@ const Questions = () => {
     )
 }
 
-export default Questions;
+export default QuizQA;
