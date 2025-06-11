@@ -52,7 +52,6 @@ const QuizQA = () => {
             questionClone = questionClone.filter(item => item.id !== id);
             setQuestions(questionClone);
         }
-        console.log(">>> check: ", type, id)
     }
 
     const handleAddRemoveAnswers = (type, questionId, answerId) => {

@@ -35,7 +35,6 @@ const ManageQuiz = (props) => {
         }
 
         let res = await postCreateNewQuiz(description, name, type?.value, image);
-        console.log('cheeck res: ', res)
         if (res && res.EC === 0) {
             toast.success(res.EM)
             setName('');

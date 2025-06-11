@@ -13,7 +13,6 @@ const ListQuiz = () => {
 
     const getQuizData = async () => {
         let res = await getQuizByUser()
-        console.log('hieu toki check res', res)
         if (res && res.EC === 0) {
             setArrQuiz(res.DT)
         }
