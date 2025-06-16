@@ -3,12 +3,17 @@ import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import { NavLink, useNavigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { NavDropdown } from 'react-bootstrap';
+import { logOut } from '../../services/apiService';
+import { toast } from 'react-toastify';
+import { doLogOut } from '../../redux/action/userAction';
+import Languge from './Language';
 
 const Header = () => {
     const isAuthenticated = useSelector(state => state.user.isAuthenticated);
     const account = useSelector(state => state.user.account);
+    const dispath = useDispatch()
     const navigate = useNavigate();
     const handleLogin = () => {
         navigate('login')
@@ -16,6 +21,19 @@ const Header = () => {
 
     const handleSignup = () => {
         navigate('register')
+    }
+
+    const handleLogOut = async () => {
+        let res = await logOut("account.email", account.refresh_token);
+        if (res && res.EC === 0) {
+            //clear data redux
+            dispath(doLogOut())
+
+            navigate('/login')
+        } else {
+            toast.error(res.EM)
+        }
+        console.log('hieu toki check res: ', res)
     }
     return (
         <Navbar expand="lg" className="bg-body-tertiary">
@@ -40,10 +58,11 @@ const Header = () => {
                             </>
                             :
                             <NavDropdown title="Settings" id='basic-nav-dropdow'>
-                                <NavDropdown.Item>Logout</NavDropdown.Item>
                                 <NavDropdown.Item>Profile</NavDropdown.Item>
+                                <NavDropdown.Item onClick={() => handleLogOut()}>Logout</NavDropdown.Item>
                             </NavDropdown>
                         }
+                        <Languge />
                     </Nav>
                 </Navbar.Collapse>
             </Container>

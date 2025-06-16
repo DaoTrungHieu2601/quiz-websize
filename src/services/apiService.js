@@ -1,7 +1,7 @@
 import axios from "../utils/axiosCustomize";
 
 //them moi
-const postCreateNewUser = (email, password, username, role, image) => {
+const postCreateNewUser = (email, password, username, role, image) => { // api dạng form data
     //submit data
     const data = new FormData();
     data.append('email', email);
@@ -104,8 +104,12 @@ const postUpsertQA = (data) => {
     return axios.post(`api/v1/quiz-upsert-qa`, { ...data });
 }
 
+const logOut = (email, refresh_token) => {
+    return axios.post('api/v1/logout', { email, refresh_token });
+}
+
 export {
     postCreateNewUser, getAllUser, putUpdateUser, deleteUser, getUsersPaginate, postLogin, postRegister,
     getDataQuiz, postSubmitQuiz, postCreateNewQuiz, getAllQuizForAdmin, postCreateNewQuestion, getQuizByUser,
-    postCreateNewAnswer, postAssignQuiz, getQuizWithQA, postUpsertQA
+    postCreateNewAnswer, postAssignQuiz, getQuizWithQA, postUpsertQA, logOut
 }
