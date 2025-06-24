@@ -1,5 +1,4 @@
 import { Route, Routes } from 'react-router-dom';
-import User from './components/User/User'
 import Admin from './components/Admin/Admin'
 import HomePage from './components/home/HomePage';
 import ManageUser from './components/Admin/Content/ManageUser';
@@ -14,9 +13,9 @@ import DetailQuiz from './components/User/DetailQuiz';
 import ManageQuiz from './components/Admin/Content/Quiz/ManageQuiz';
 import Question from './components/Admin/Content/Question/Questions';
 import Questions from './components/Admin/Content/Question/Questions';
-import Test2 from './routes/Test2';
-import Test1 from './routes/Test1';
 import PrivateRoute from './routes/PrivateRoute';
+import { Suspense } from 'react';
+
 
 const NotFound = () => {
     return (
@@ -28,7 +27,7 @@ const NotFound = () => {
 
 const Layout = () => {
     return (
-        <>
+        <Suspense fallback={<div>Loading...</div>}>
             <Routes>
                 <Route path='/' element={<App />} >
                     <Route index element={<HomePage />} />
@@ -65,7 +64,7 @@ const Layout = () => {
                 draggable
                 pauseOnHover
             />
-        </>
+        </Suspense>
     )
 }
 

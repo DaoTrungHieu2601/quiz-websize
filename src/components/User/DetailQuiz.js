@@ -9,6 +9,7 @@ import ModalResult from "./ModalResult";
 import RightContent from "./Content/RightContent";
 
 const DetailQuiz = () => {
+
     const params = useParams(); // lay tham so tren duong link
     const quizId = params.id;
     const location = useLocation();
@@ -39,7 +40,7 @@ const DetailQuiz = () => {
                         item.answers.isSelected = false;
                         answers.push(item.answers)
                     })
-
+                    answers = _.orderBy(answers, ['id'], ['asc']);
                     return { questionId: key, answers, questionDescription, image }
                 })
                 .value();
