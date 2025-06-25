@@ -5,5 +5,9 @@
         "title3": {
             "login": "Get's started. It's free"
         }
+    },
+    "sidebar": {
+        "menu1": "Overview",
+        "menu2": "Function"
     }
 }

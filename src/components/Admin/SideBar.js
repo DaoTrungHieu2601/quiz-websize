@@ -15,10 +15,15 @@ import { FaTachometerAlt, FaGem, FaGithub } from 'react-icons/fa';
 import sidebarBg from '../../assets/bg2.jpg';
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from "react-i18next";
+
+
 
 const SideBar = (props) => {
     const { image, collapsed, toggled, handleToggleSidebar } = props;
     const navigate = useNavigate();
+    const { t } = useTranslation();
+
     return (
         <>
             <ProSidebar
@@ -54,7 +59,7 @@ const SideBar = (props) => {
                             icon={<FaTachometerAlt />}
                         // suffix={<span className="badge red">New</span>}
                         >
-                            Dashboard
+                            {t('sidebar.menu1')}
                             <Link to="/admin" />
                         </MenuItem>
                         {/* <MenuItem icon={<FaGem />}> components </MenuItem> */}
@@ -64,14 +69,14 @@ const SideBar = (props) => {
                             // suffix={<span className="badge yellow">3</span>}
                             // icon={<FaRegLaughWink />}
                             icon={<FaGem />}
-                            title="Features"
+                            title={t('sidebar.menu2')}
                         >
                             <MenuItem>
-                                Quản lý Users
+                                Quản lý người dùng
                                 <Link to="/admin/manage-users" />
                             </MenuItem>
                             <MenuItem>
-                                Quản lý Bài Quiz
+                                Quản lý câu đố
                                 <Link to="/admin/manage-quizzes" />
                             </MenuItem>
                             <MenuItem>

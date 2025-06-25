@@ -5,5 +5,9 @@
         "title3": {
             "login": "Hãy bắt đầu nó miễn phí"
         }
+    },
+    "sidebar": {
+        "menu1": "Tổng quan",
+        "menu2": "Chức năng"
     }
 }

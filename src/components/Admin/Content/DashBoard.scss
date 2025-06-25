@@ -2,8 +2,9 @@
     padding: 15px;
 
     title {
-        font-size  : 20px;
-        font-weight: 600;
+        font-size    : 20px;
+        font-weight  : 600;
+        margin-bottom: 20px;
     }
 
     .content {
@@ -11,25 +12,31 @@
 
         .c-left {
             width    : 50%;
-            border   : 1px solid green;
             display  : flex;
             flex-wrap: wrap;
-
+            gap      : 20px;
 
             .child {
-                width          : 50%;
+                width          : calc(50% - 20px);
                 flex-wrap      : wrap;
                 border         : 1px solid #ccc;
                 display        : flex;
+                border-radius  : 10px;
                 align-items    : center;
                 justify-content: center;
+                flex-direction : column;
+
+                .text-2 {
+                    font-size: 25px;
+                }
+
+
             }
         }
 
         .c-right {
             width : 50%;
-            border: 1px solid red;
-            height: 300px;
+            height: 350px;
         }
     }
 }
